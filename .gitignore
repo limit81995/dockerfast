@@ -1,2 +1,7 @@
 # 容器生成文件
 contains/*/data/*
+
+# 系统 IDE 生成的文件
+.DS_Store
+.idea
+.vscode
