@@ -36,9 +36,6 @@ mkdir ${CONTAINS_DIR}
 mkdir ${CONTAINS_APP_DIR}
 mkdir ${CONTAINS_APP_DIR}/conf
 mkdir ${CONTAINS_APP_DIR}/data
-touch ${CONTAINS_APP_DIR}/data/.gitignore
-
-echo "* \n # 除了一下文件 \n !.gitignore" > ${CONTAINS_APP_DIR}/data/.gitignore
 
 # 复制配置文件
 cp ${SETUP_CURRENT_DIR}/redis.conf ${APP_CONF_DIR}/redis.conf
