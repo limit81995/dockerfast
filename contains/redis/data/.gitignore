@@ -1,4 +1,3 @@
-*
-
-# 除了以下文件
-!.gitignore
+* 
+ # 除了一下文件 
+ !.gitignore
