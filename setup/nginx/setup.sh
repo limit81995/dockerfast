@@ -11,6 +11,10 @@ APP_PORT=80
 
 ################## 安装常量配置 ###################
 
+# 镜像名称
+IMAGES_NAME="redis"
+# 镜像版本
+IMAGES_VERSION="latest"
 # 当前脚本路径
 SETUP_CURRENT_DIR=$(cd $(dirname $0);pwd) 
 # 通用目录地址
@@ -28,7 +32,7 @@ APP_CONF_DIR=${CONTAINS_APP_DIR}"/conf"
 
 ################## 安装脚本 ###################
 
-docker build ${SETUP_CURRENT_DIR}/.
+docker build -t ${IMAGES_NAME}:${IMAGES_VERSION} ${SETUP_CURRENT_DIR}/.
 echo "\033[31m INSTALLING NGINX ... \033[0m"
 echo 
 

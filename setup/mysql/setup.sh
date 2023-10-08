@@ -13,6 +13,10 @@ APP_PORT=3306
 
 ################## 安装常量配置 ###################
 
+# 镜像名称
+IMAGES_NAME="mysql"
+# 镜像版本
+IMAGES_VERSION="latest"
 # 当前脚本路径
 SETUP_CURRENT_DIR=$(cd $(dirname $0);pwd) 
 # 通用目录地址
@@ -30,7 +34,7 @@ APP_CONF_DIR=${CONTAINS_APP_DIR}"/conf"
 
 ################## 安装脚本 ###################
 
-docker build .
+docker build -t ${IMAGES_NAME}:${IMAGES_VERSION} ${SETUP_CURRENT_DIR}/.
 echo "\033[31m INSTALLING MYSQL ... \033[0m"
 
 # 创建需要的文件夹目录
