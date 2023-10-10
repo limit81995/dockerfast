@@ -1,52 +1,40 @@
-################## REDIS配置 ###################
+################################################
 
-#容器名称
-APP_CONTAINER_NAME="nginx_latest"
-#对外端口
-APP_PORT=80
+################## 容器配置
 
-###############################################
-
-
-
-################## 安装常量配置 ###################
-
-# 镜像名称
-IMAGES_NAME="redis"
-# 镜像版本
-IMAGES_VERSION="latest"
 # 当前脚本路径
-SETUP_CURRENT_DIR=$(cd $(dirname $0);pwd) 
-# 通用目录地址
-CONTAINS_DIR=${SETUP_CURRENT_DIR}"/../../contains"
+SETUP_CURRENT_DIR=$(cd $(dirname $0);pwd)
+#APP 名称
+APP_NAME=${SETUP_CURRENT_DIR##*/};
+# 镜像名称
+IMAGE_NAME="nginx"
+# 镜像版本号
+IMAGE_VERSION="latest"
+# 端口
+APP_PORT="8055"
+# 容器名称
+APP_CONTAINER_NAME="${APP_NAME}_latest"
 # APP通用安装目录地址
-CONTAINS_APP_DIR=${CONTAINS_DIR}"/nginx"
-# 本地数据映射目录
-APP_DATA_DIR=${CONTAINS_APP_DIR}"/data"
-# 本地配置映射目录
-APP_CONF_DIR=${CONTAINS_APP_DIR}"/conf"
+CONTAINS_APP_DIR=${SETUP_CURRENT_DIR}/../../contains/${APP_NAME}
 
-###############################################
+# 运行SETUP初始化脚本
+sh ${SETUP_CURRENT_DIR}/../init.sh
 
+# 如果contains中没有配置文件，则复制默认配置文件
 
+if !(test -f "${CONTAINS_APP_DIR}/conf/nginx.conf"); then
+  cp ${SETUP_CURRENT_DIR}/nginx.conf ${CONTAINS_APP_DIR}/conf/nginx.conf
+fi
 
-################## 安装脚本 ###################
+############ 安装脚本
 
-docker build -t ${IMAGES_NAME}:${IMAGES_VERSION} ${SETUP_CURRENT_DIR}/.
-echo "\033[31m INSTALLING NGINX ... \033[0m"
-echo 
-
-# 创建需要的文件夹目录
-
-mkdir ${CONTAINS_DIR}
-mkdir ${CONTAINS_APP_DIR}
-mkdir ${APP_CONF_DIR}
-mkdir ${APP_DATA_DIR}
+docker build -t ${IMAGE_NAME}:${IMAGE_VERSION} .
 
 docker run \
 --name ${APP_CONTAINER_NAME} \
--v ${APP_DATA_DIR}:/usr/share/nginx/html \
+-v ${CONTAINS_APP_DIR}/data:/usr/share/nginx/html \
+-v ${CONTAINS_APP_DIR}/conf/nginx.conf:/etc/nginx/nginx.conf \
 -p ${APP_PORT}:80 \
--d  nginx:latest
+-d ${IMAGE_NAME}:${IMAGE_VERSION}
 
 ###############################################
