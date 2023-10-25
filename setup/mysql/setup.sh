@@ -10,11 +10,11 @@ APP_ROOT_PASSWORD=123456
 # 镜像名称
 IMAGE_NAME="mysql"
 # 镜像版本号
-IMAGE_VERSION="latest"
+IMAGE_VERSION="8.0.30"
 # 端口
 APP_PORT="3306"
 # 容器名称
-APP_CONTAINER_NAME="${APP_NAME}_latest"
+APP_CONTAINER_NAME="${APP_NAME}_${IMAGE_VERSION}"
 # APP通用安装目录地址
 CONTAINS_APP_DIR=${SETUP_CURRENT_DIR}/../../contains/${APP_NAME}
 
@@ -28,6 +28,8 @@ sh ${SETUP_CURRENT_DIR}/../init.sh
 # fi
 
 ############ 安装脚本
+
+
 
 docker build -t ${IMAGE_NAME}:${IMAGE_VERSION} .
 
