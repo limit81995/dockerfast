@@ -9,11 +9,11 @@ APP_NAME=${SETUP_CURRENT_DIR##*/};
 # 镜像名称
 IMAGE_NAME="nginx"
 # 镜像版本号
-IMAGE_VERSION="latest"
+IMAGE_VERSION="1.25"
 # 端口
-APP_PORT="8055"
+APP_PORT="8199"
 # 容器名称
-APP_CONTAINER_NAME="${APP_NAME}_latest"
+APP_CONTAINER_NAME="${APP_NAME}"
 # APP通用安装目录地址
 CONTAINS_APP_DIR=${SETUP_CURRENT_DIR}/../../contains/${APP_NAME}
 
