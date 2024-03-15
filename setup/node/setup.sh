@@ -13,7 +13,7 @@ IMAGE_VERSION="latest"
 # 端口
 APP_PORT="3000"
 # 容器名称
-APP_CONTAINER_NAME="${APP_NAME}_latest"
+APP_CONTAINER_NAME="${APP_NAME}"
 # APP通用安装目录地址
 CONTAINS_APP_DIR=${SETUP_CURRENT_DIR}/../../contains/${APP_NAME}
 
