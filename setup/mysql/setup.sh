@@ -44,11 +44,15 @@ docker run \
 
 
 ######### 注意：安装后需要将 mysql user表中的root用户的host 改为"%";用来所有地址都可以访问。
+## 连接mysql
+# mysql -uroot -p123456
 ## 修改root为可以所有远程访问的用户
 # use mysql;
 # update user set host="%" where user="root" and host="*";
 ## 修改root密码
 # alter user 'root' identified by '123456';
+## 刷新立即生效
+# flush privileges;
 
 # 容器地址：   数据库配置地址 /etc/mysql/conf.d/mysql.cnf 数据库地址：/var/lib/mysql
 
