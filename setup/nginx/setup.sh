@@ -11,7 +11,7 @@ IMAGE_NAME="nginx"
 # 镜像版本号
 IMAGE_VERSION="1.25"
 # 端口
-APP_PORT="8199"
+APP_PORT="80"
 # 容器名称
 APP_CONTAINER_NAME="${APP_NAME}"
 # APP通用安装目录地址
