@@ -10,6 +10,8 @@ APP_NAME=${SETUP_CURRENT_DIR##*/};
 IMAGE_NAME="gitlab/gitlab-ee"
 #APP 镜像版本号
 IMAGE_VERSION="16.10.2-ee.0"
+
+EXTERNAL_URL="http://gitlab.gszzz.com"
 # 端口
 APP_PORT="9080"
 HTTPS_APP_PORT="443"
@@ -31,7 +33,7 @@ sh ${SETUP_CURRENT_DIR}/../init.sh
 ############ 安装脚本
 
 docker run -d \
---env GITLAB_OMNIBUS_CONFIG="external_url 'http://10.216.65.173:'${APP_PORT}; gitlab_rails['gitlab_shell_ssh_port'] = ${SSH_PORT}" \
+--env GITLAB_OMNIBUS_CONFIG="external_url '${EXTERNAL_URL}:${APP_PORT}'; gitlab_rails['gitlab_shell_ssh_port'] = ${SSH_PORT}" \
 -p ${APP_PORT}:${APP_PORT} \
 -p ${HTTPS_APP_PORT}:${HTTPS_APP_PORT} \
 -p ${SSH_PORT}:${SSH_PORT} \
