@@ -23,9 +23,9 @@ sh ${SETUP_CURRENT_DIR}/../init.sh
 
 # 如果contains中没有配置文件，则复制默认配置文件
 
-# if !(test -f "${CONTAINS_APP_DIR}/conf/nginx.conf"); then
-#   cp ${SETUP_CURRENT_DIR}/nginx.conf ${CONTAINS_APP_DIR}/conf/nginx.conf
-# fi
+ if !(test -f "${CONTAINS_APP_DIR}/conf/my.cnf"); then
+   cp ${SETUP_CURRENT_DIR}/my.cnf ${CONTAINS_APP_DIR}/conf/my.cnf
+ fi
 
 ############ 安装脚本
 
