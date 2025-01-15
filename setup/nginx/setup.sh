@@ -34,7 +34,7 @@ if [ ! -d ${CONTAINERS_APP_DIR}/conf ]; then
   mkdir ${CONTAINERS_APP_DIR}/conf
 fi
 
-# 如果contains中没有配置文件，则复制默认配置文件
+# 如果containers中没有配置文件，则复制默认配置文件
 
 if !(test -f "${CONTAINERS_APP_DIR}/conf/nginx.conf"); then
   cp ${SETUP_CURRENT_DIR}/temp/nginx.conf ${CONTAINERS_APP_DIR}/conf/nginx.conf

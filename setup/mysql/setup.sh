@@ -17,7 +17,7 @@ APP_PORT="3306"
 # 容器名称
 APP_CONTAINER_NAME="${APP_NAME}"
 # APP通用安装目录地址
-CONTAINERS_APP_DIR=${SETUP_CURRENT_DIR}/../../contains/${APP_NAME}
+CONTAINERS_APP_DIR=${SETUP_CURRENT_DIR}/../../containers/${APP_NAME}
 
 # 检查容器目录是否存在 不存在则创建
 if [ ! -d ${SETUP_CURRENT_DIR}/../../containers ]; then
@@ -36,7 +36,7 @@ if [ ! -d ${CONTAINERS_APP_DIR}/conf ]; then
   mkdir ${CONTAINERS_APP_DIR}/conf
 fi
 
-# 如果contains中没有配置文件，则复制默认配置文件
+# 如果containers中没有配置文件，则复制默认配置文件
 
  if !(test -f "${CONTAINERS_APP_DIR}/conf/my.cnf"); then
    cp ${SETUP_CURRENT_DIR}/temp/my.cnf ${CONTAINERS_APP_DIR}/conf/my.cnf
