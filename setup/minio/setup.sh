@@ -48,14 +48,16 @@ fi
 # fi
 
 ############ 安装脚本
+
+#   设置永久默认账号密码。 正式环境会先使用默认，进入控制台创建新的admin权限账号，再关闭默认账号
+#   -e "MINIO_ROOT_USER=${MINIO_ROOT_USER}"
+#   -e "MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}"
+
 docker run -d\
    -p ${APP_PORT}:9000 \
    -p ${CONSOLE_PORT}:9001 \
    --name ${APP_NAME} \
    -v ${CONTAINERS_APP_DIR}/data:/data \
-   # 永久默认账号密码。 正式环境会先使用默认，进入控制台创建新的admin权限账号，再关闭默认账号
-#   -e "MINIO_ROOT_USER=${MINIO_ROOT_USER}" \
-#   -e "MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}" \
    minio/minio server /data --console-address ":9001"
 
 ################################################
