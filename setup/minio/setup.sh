@@ -17,7 +17,7 @@ CONSOLE_PORT="9201"
 #管理员账号
 MINIO_ROOT_USER=minioadmin
 #管理员密码
-MINIO_ROOT_PASSWORD=minioadmin
+MINIO_ROOT_PASSWORD=$(cat /proc/sys/kernel/random/uuid)
 # 容器名称
 APP_CONTAINER_NAME="${APP_NAME}"
 # APP通用安装目录地址
@@ -50,14 +50,18 @@ fi
 ############ 安装脚本
 
 #   设置永久默认账号密码。 正式环境会先使用默认，进入控制台创建新的admin权限账号，再关闭默认账号
-#   -e "MINIO_ROOT_USER=${MINIO_ROOT_USER}"
-#   -e "MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}"
+
+echo "ROOT账号：${MINIO_ROOT_USER}";
+echo "ROOT密码：${MINIO_ROOT_PASSWORD}";
+echo "请妥善保存，非必要时可请勿使用ROOT账号。";
 
 docker run -d\
    -p ${APP_PORT}:9000 \
    -p ${CONSOLE_PORT}:9001 \
    --name ${APP_NAME} \
    -v ${CONTAINERS_APP_DIR}/data:/data \
+   -e "MINIO_ROOT_USER=${MINIO_ROOT_USER}" \
+   -e "MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}" \
    minio/minio server /data --console-address ":9001"
 
 ################################################
