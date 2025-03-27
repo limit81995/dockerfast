@@ -40,5 +40,5 @@ if [ ! -d ${CONTAINERS_APP_DIR}/logs ]; then
 fi
 
 ############ 安装脚本
-docker run -d -v ${CONTAINERS_APP_DIR}/data:/var/jenkins_home -p ${APP_PORT}:8080 -p 50000:50000 --restart=on-failure ${IMAGE_NAME}:${IMAGE_VERSION}
+docker run -d -v ${CONTAINERS_APP_DIR}/data:/var/jenkins_home -p ${APP_PORT}:8080 -p 50000:50000 --restart=on-failure -e JAVA_OPTS=-Duser.timezone=Asia/Shanghai ${IMAGE_NAME}:${IMAGE_VERSION}
 ################################################
