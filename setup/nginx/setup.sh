@@ -26,10 +26,6 @@ if [ ! -d ${CONTAINERS_APP_DIR} ]; then
   mkdir ${CONTAINERS_APP_DIR}
 fi
 
-if [ ! -d ${CONTAINERS_APP_DIR}/data ]; then
-  mkdir ${CONTAINERS_APP_DIR}/data
-fi
-
 if [ ! -d ${CONTAINERS_APP_DIR}/conf ]; then
   mkdir ${CONTAINERS_APP_DIR}/conf
 fi
@@ -40,10 +36,6 @@ if !(test -f "${CONTAINERS_APP_DIR}/conf/nginx.conf"); then
   cp ${SETUP_CURRENT_DIR}/temp/nginx.conf ${CONTAINERS_APP_DIR}/conf/nginx.conf
 fi
 
-if [ ! -d ${CONTAINERS_APP_DIR}/conf/conf.d ]; then
-  mkdir ${CONTAINERS_APP_DIR}/conf/conf.d
-fi
-
 ############ 安装脚本
 
 docker run \
@@ -51,7 +43,9 @@ docker run \
 -v ${CONTAINERS_APP_DIR}/data:/usr/share/nginx/html \
 -v ${CONTAINERS_APP_DIR}/conf/nginx.conf:/etc/nginx/nginx.conf \
 -v ${CONTAINERS_APP_DIR}/conf/conf.d:/etc/nginx/conf.d \
+-v ${CONTAINERS_APP_DIR}/cert:/etc/nginx/cert \
 -p ${APP_PORT}:80 \
+-p 443:443 \
 -d ${IMAGE_NAME}:${IMAGE_VERSION}
 
 ###############################################
