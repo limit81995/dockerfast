@@ -9,9 +9,9 @@ APP_NAME=${SETUP_CURRENT_DIR##*/};
 # 镜像名称
 IMAGE_NAME="gitlab/gitlab-ee"
 #APP 镜像版本号
-IMAGE_VERSION="16.10.2-ee.0"
+IMAGE_VERSION="17.10.7-ee.0"
 
-EXTERNAL_URL="http://gitlab.gszzz.com"
+EXTERNAL_URL="http://gitlab.example.com"
 # 端口
 APP_PORT="9080"
 HTTPS_APP_PORT="443"
