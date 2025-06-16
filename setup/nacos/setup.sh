@@ -16,8 +16,8 @@ IMAGE_VERSION="latest"
 MYSQL_HOST="192.168.66.201"
 MYSQL_PORT="3306"
 MYSQL_DB_NAME="nacos"
-MYSQL_DB_USER="nacos"
-MYSQL_DB_PASSWORD="nacosadmin"
+MYSQL_USER="nacos"
+MYSQL_PASSWORD="nacosadmin"
 
 
 # 对外端口
