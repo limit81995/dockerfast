@@ -1,5 +1,7 @@
 ################################################
 
+#注意构建容器前，请先创建数据库和初始化根目录的SQL文件
+
 ################## 容器配置
 
 # 当前脚本路径
@@ -10,8 +12,15 @@ APP_NAME=${SETUP_CURRENT_DIR##*/};
 IMAGE_NAME="nacos/nacos-server"
 #APP 镜像版本号
 IMAGE_VERSION="latest"
+#数据库配置
+MYSQL_HOST="192.168.66.201"
+MYSQL_PORT="3306"
+MYSQL_DB_NAME="nacos"
+MYSQL_DB_USER="nacos"
+MYSQL_DB_PASSWORD="nacosadmin"
 
-# 端口
+
+# 对外端口
 APP_PORT="8848"
 # 容器名称
 APP_CONTAINER_NAME="${APP_NAME}"
@@ -44,11 +53,11 @@ docker run -d --name ${APP_CONTAINER_NAME} \
   -p ${APP_PORT}:8848 \
   -e MODE=standalone \
   -e SPRING_DATASOURCE_PLATFORM=mysql \
-  -e MYSQL_SERVICE_HOST=192.168.1.201 \
-  -e MYSQL_SERVICE_PORT=3306 \
-  -e MYSQL_SERVICE_DB_NAME=nacos \
-  -e MYSQL_SERVICE_USER=nacos \
-  -e MYSQL_SERVICE_PASSWORD=nacos \
+  -e MYSQL_SERVICE_HOST=${MYSQL_HOST} \
+  -e MYSQL_SERVICE_PORT=${MYSQL_PORT} \
+  -e MYSQL_SERVICE_DB_NAME=${MYSQL_DB_NAME} \
+  -e MYSQL_SERVICE_USER=${MYSQL_USER} \
+  -e MYSQL_SERVICE_PASSWORD=${MYSQL_PASSWORD} \
   -e MYSQL_SERVICE_DB_PARAM="characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true" \
   -e NACOS_AUTH_IDENTITY_KEY=2222 \
   -e NACOS_AUTH_IDENTITY_VALUE=2xxx \
