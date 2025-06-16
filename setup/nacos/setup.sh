@@ -22,6 +22,8 @@ MYSQL_PASSWORD="nacosadmin"
 
 # 对外端口
 APP_PORT="8848"
+# 控制台端口
+APP_CONSOLE_PORT="8850"
 # 容器名称
 APP_CONTAINER_NAME="${APP_NAME}"
 # APP通用安装目录地址
@@ -51,6 +53,7 @@ fi
 ############ 安装脚本
 docker run -d --name ${APP_CONTAINER_NAME} \
   -p ${APP_PORT}:8848 \
+  -p ${APP_CONSOLE_PORT}:8080 \
   -e MODE=standalone \
   -e SPRING_DATASOURCE_PLATFORM=mysql \
   -e MYSQL_SERVICE_HOST=${MYSQL_HOST} \
