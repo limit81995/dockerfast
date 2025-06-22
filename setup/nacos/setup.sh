@@ -13,7 +13,7 @@ IMAGE_NAME="nacos/nacos-server"
 #APP 镜像版本号
 IMAGE_VERSION="latest"
 #数据库配置
-MYSQL_HOST="192.168.66.201"
+MYSQL_HOST="192.168.1.201"
 MYSQL_PORT="3306"
 MYSQL_DB_NAME="nacos"
 MYSQL_USER="nacos"
@@ -54,6 +54,9 @@ fi
 docker run -d --name ${APP_CONTAINER_NAME} \
   -p ${APP_PORT}:8848 \
   -p ${APP_CONSOLE_PORT}:8080 \
+  -v ${CONTAINERS_APP_DIR}/data:/home/nacos/data \
+  -v ${CONTAINERS_APP_DIR}/logs:/home/nacos/logs \
+  -v ${CONTAINERS_APP_DIR}/conf:/home/nacos/conf \
   -e MODE=standalone \
   -e SPRING_DATASOURCE_PLATFORM=mysql \
   -e MYSQL_SERVICE_HOST=${MYSQL_HOST} \
