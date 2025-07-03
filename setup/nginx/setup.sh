@@ -35,6 +35,10 @@ fi
 if !(test -f "${CONTAINERS_APP_DIR}/conf/nginx.conf"); then
   cp ${SETUP_CURRENT_DIR}/temp/nginx.conf ${CONTAINERS_APP_DIR}/conf/nginx.conf
 fi
+if !(test -d "${CONTAINERS_APP_DIR}/conf.d"); then
+  mkdir ${CONTAINERS_APP_DIR}/conf.d
+  cp -r ${SETUP_CURRENT_DIR}/temp/conf.d ${CONTAINERS_APP_DIR}/conf/conf.d
+fi
 
 ############ 安装脚本
 
