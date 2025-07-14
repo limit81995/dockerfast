@@ -1,0 +1,38 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: ${APP_NAME}
+    ports:
+      - "${KAFKA_DOCKER_HOST_PORT}:${KAFKA_DOCKER_HOST_PORT}"
+      - "${KAFKA_EXTERNAL_HOST_PORT}:${KAFKA_EXTERNAL_HOST_PORT}"
+    networks:
+      - local_network
+    environment:
+      # 启用 KRaft 模式
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+
+      # 配置监听端口（一个对客户端，一个内部控制器）
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:${KAFKA_DOCKER_HOST_PORT},CONTROLLER://0.0.0.0:9093,EXTERNAL://0.0.0.0:${KAFKA_EXTERNAL_HOST_PORT}
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://${APP_NAME}:${KAFKA_DOCKER_HOST_PORT},EXTERNAL://${KAFKA_EXTERNAL_HOST}:${KAFKA_EXTERNAL_HOST_PORT}
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+
+      # 控制器监听名
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+
+      # 允许明文通信
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CLIENT_USERS=${KAFKA_USERNAME}
+      - KAFKA_CLIENT_PASSWORDS=${KAFKA_PASSWORD}
+
+      # 启用 KRaft（必要）
+      - KAFKA_ENABLE_KRAFT=yes
+    volumes:
+      - ${CONTAINERS_APP_DIR}/data:/bitnami/kafka

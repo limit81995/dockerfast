@@ -1,0 +1,16 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:8080"
+    networks:
+      - local_network
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=${KAFKA_CLUSTERS_0_NAME}
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=${KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS}
