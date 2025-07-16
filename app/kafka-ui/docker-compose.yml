@@ -5,7 +5,7 @@ networks:
 
 services:
   kafka-ui:
-    image: provectuslabs/kafka-ui
+    image: ghcr.io/kafbat/kafka-ui
     container_name: ${APP_NAME}
     ports:
       - "${APP_PORT}:8080"
@@ -14,3 +14,6 @@ services:
     environment:
       - KAFKA_CLUSTERS_0_NAME=${KAFKA_CLUSTERS_0_NAME}
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=${KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS}
+      - AUTH_TYPE=${AUTH_TYPE}
+      - SPRING_SECURITY_USER_NAME=${SPRING_SECURITY_USER_NAME}
+      - SPRING_SECURITY_USER_PASSWORD=${SPRING_SECURITY_USER_PASSWORD}
