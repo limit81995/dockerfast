@@ -1,0 +1,18 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:3306"
+    networks:
+      - local_network
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ${CONTAINERS_APP_DIR}/data:/var/lib/mysql
+      - ${CONTAINERS_APP_DIR}/conf:/etc/mysql/conf.d
