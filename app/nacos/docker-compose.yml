@@ -1,0 +1,32 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:8848"
+      - "${APP_CONSOLE_PORT}:8080"
+    networks:
+      - local_network
+    volumes:
+#      - ${CONTAINERS_APP_DIR}/data:/home/nacos/data
+#      - ${CONTAINERS_APP_DIR}/conf:/home/nacos/conf
+      - ${CONTAINERS_APP_DIR}/logs:/home/nacos/logs
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=${MYSQL_HOST}
+      - MYSQL_SERVICE_PORT=${MYSQL_PORT}
+      - MYSQL_SERVICE_DB_NAME=${MYSQL_DB_NAME}
+      - MYSQL_SERVICE_USER=${MYSQL_USER}
+      - MYSQL_SERVICE_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_SERVICE_DB_PARAM=characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      - NACOS_AUTH_ENABLE=${NACOS_AUTH_ENABLE}
+      - NACOS_AUTH_IDENTITY_KEY=${NACOS_AUTH_IDENTITY_KEY}
+      - NACOS_AUTH_IDENTITY_VALUE=${NACOS_AUTH_IDENTITY_VALUE}
+      - NACOS_AUTH_TOKEN=${NACOS_AUTH_TOKEN}
+    restart: on-failure
