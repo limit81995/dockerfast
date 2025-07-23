@@ -1,0 +1,27 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  akhq:
+    image: ghcr.io/tchiotludo/akhq:latest
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:8080"
+    networks:
+      - local_network
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            my-cluster:
+              properties:
+                bootstrap.servers: "kafka:9092"
+          security:
+            default-roles:
+              - topic/read
+              - topic/data/read
+              - topic/config/update
+              - group/read
+    restart: always
