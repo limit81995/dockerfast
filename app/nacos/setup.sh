@@ -18,6 +18,14 @@ if [ ! -d ${CONTAINERS_APP_DIR}/conf ]; then
   mkdir ${CONTAINERS_APP_DIR}/conf
 fi
 
+if [ ! -d ${CONTAINERS_APP_DIR}/conf/init.d ]; then
+  mkdir ${CONTAINERS_APP_DIR}/conf/init.d
+fi
+
+if [ ! -f ${CONTAINERS_APP_DIR}/conf/init.d/custom.properties ]; then
+  cp custom.properties ${CONTAINERS_APP_DIR}/conf/init.d/
+fi
+
 #暴露的环境变量
 export APP_NAME=${APP_NAME}
 export CONTAINERS_APP_DIR=${CONTAINERS_APP_DIR}

@@ -14,7 +14,7 @@ services:
       - local_network
     volumes:
 #      - ${CONTAINERS_APP_DIR}/data:/home/nacos/data
-#      - ${CONTAINERS_APP_DIR}/conf:/home/nacos/conf
+      - ${CONTAINERS_APP_DIR}/conf/init.d:/home/nacos/init.d
       - ${CONTAINERS_APP_DIR}/logs:/home/nacos/logs
     environment:
       - MODE=standalone
