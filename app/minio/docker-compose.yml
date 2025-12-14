@@ -1,0 +1,21 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  redis:
+    image: minio/minio:latest
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:9000"
+      - "${CONSOLE_PORT}:9001"
+    networks:
+      - local_network
+    volumes:
+      - ${CONTAINERS_APP_DIR}/data:/data
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    entrypoint: [ "minio" ]
+    command: [ "server", "/data", "--console-address", ":9001" ]
