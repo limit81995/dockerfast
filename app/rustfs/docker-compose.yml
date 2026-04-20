@@ -1,11 +1,10 @@
 networks:
   local_network:
-    driver: bridge
     external: true
 
 services:
-  minio:
-    image: minio/minio:latest
+  rustfs:
+    image: rustfs/rustfs:latest
     container_name: ${APP_NAME}
     ports:
       - "${APP_PORT}:9000"
@@ -14,8 +13,8 @@ services:
       - local_network
     volumes:
       - ${CONTAINERS_APP_DIR}/data:/data
+      - ${CONTAINERS_APP_DIR}/logs:/logs
     environment:
-      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
-      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
-    entrypoint: [ "minio" ]
-    command: [ "server", "/data", "--console-address", ":9001" ]
+      - RUSTFS_ACCESS_KEY=${ROOT_USER}
+      - RUSTFS_SECRET_KEY=${ROOT_PASSWORD}
+      - RUSTFS_CONSOLE_ENABLE=true
