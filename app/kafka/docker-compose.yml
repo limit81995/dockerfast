@@ -44,4 +44,4 @@ services:
       # 挂载数据目录 (Apache 镜像默认路径与 Bitnami 不同)
       - ${CONTAINERS_APP_DIR}/data:/var/lib/kafka/data
       # 【关键点】将宿主机创建的文件挂载进容器
-      - ./kafka_server_jaas.conf:/etc/kafka/kafka_server_jaas.conf:ro
+      - ${CONTAINERS_APP_DIR}/kafka_server_jaas.conf:/etc/kafka/kafka_server_jaas.conf

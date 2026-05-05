@@ -11,6 +11,8 @@ mkdir -p ${CONTAINERS_APP_DIR}
 export APP_NAME=${APP_NAME}
 export CONTAINERS_APP_DIR=${CONTAINERS_APP_DIR}
 
+cp ./kafka_server_jaas.conf ${CONTAINERS_APP_DIR}/kafka_server_jaas.conf
+
 sudo chown -R 1000:1000 ${CONTAINERS_APP_DIR}
 sudo chmod -R 777 ${CONTAINERS_APP_DIR}
 # 创建共用网络
