@@ -6,3 +6,4 @@
 .idea
 .vscode
 containers/*
+app/**/.env
