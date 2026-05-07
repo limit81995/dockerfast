@@ -1,0 +1,17 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  hysteria:
+    image: tobyxdd/hysteria:latest
+    container_name: ${APP_NAME}
+    cap_add:
+      - NET_ADMIN
+    network_mode: "host"
+    volumes:
+      - ${CONTAINERS_APP_DIR}/config.yaml:/etc/config.yaml
+      - ${CONTAINERS_APP_DIR}/server.crt:/etc/server.crt
+      - ${CONTAINERS_APP_DIR}/server.key:/etc/server.key
+    command: ["server", "-c", "/etc/config.yaml"]
