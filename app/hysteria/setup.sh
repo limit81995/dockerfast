@@ -17,6 +17,11 @@ export CONTAINERS_APP_DIR=${CONTAINERS_APP_DIR}
 
 NODE_IP=$(curl -4s https://api.ipify.org)
 
+if [ -z "${NODE_IP}" ]; then
+    echo "Error: NODE_IP is empty." >&2
+    exit 1
+fi
+
 cat > ${CONTAINERS_APP_DIR}/config.yaml <<EOF
 listen: :${APP_PORT}
 trafficStats:
