@@ -1,0 +1,18 @@
+listen: :${APP_PORT}
+trafficStats:
+  listen: :${API_PORT}
+
+tls:
+  cert: /etc/server.crt
+  key: /etc/server.key
+auth:
+  type: ${AUTH_TYPE}
+  password: ${AUTH_PASSWORD}
+  http:
+    url: ${AUTH_HTTP_URL}?ip=${NODE_IP}
+ignoreClientBandwidth: false
+masquerade:
+  type: proxy
+  proxy:
+    url: https://www.bing.com
+    rewriteHost: true
