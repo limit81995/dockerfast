@@ -16,3 +16,10 @@ masquerade:
   proxy:
     url: https://www.bing.com
     rewriteHost: true
+# outbounds:
+#   - name: my_outbound
+#     type: socks5
+#     socks5:
+#       addr: 127.0.0.1:1080 
+#       username: admin 
+#       password: 123456
