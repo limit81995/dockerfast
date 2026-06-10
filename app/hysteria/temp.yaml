@@ -9,17 +9,17 @@ auth:
   type: ${AUTH_TYPE}
   password: ${AUTH_PASSWORD}
   http:
-    url: ${AUTH_HTTP_URL}?ip=${NODE_IP}
+    url: ${AUTH_HTTP_URL}?ip=${NODE_IP}&port=${APP_PORT}
 ignoreClientBandwidth: false
 masquerade:
   type: proxy
   proxy:
     url: https://www.bing.com
     rewriteHost: true
-# outbounds:
-#   - name: my_outbound
-#     type: socks5
-#     socks5:
-#       addr: 127.0.0.1:1080 
-#       username: admin 
-#       password: 123456
+outbounds:
+  - name: my_outbound
+    type: ${OUTBOUNDS_TYPE}
+    socks5:
+      addr: ${OUTBOUNDS_SOCKS5_ADDR}
+      username: ${OUTBOUNDS_SOCKS5_USERNAME} 
+      password: ${OUTBOUNDS_SOCKS5_PASSWORD}
