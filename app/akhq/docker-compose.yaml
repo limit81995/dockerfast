@@ -1,0 +1,18 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  akhq:
+    image: ghcr.io/tchiotludo/akhq:latest
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:8080"
+    networks:
+      - local_network
+    environment:
+      MICRONAUT_CONFIG_FILES: /app/config/application.yaml
+    volumes:
+      - ${CONTAINERS_APP_DIR}/application.yaml:/app/config/application.yaml
+    restart: always

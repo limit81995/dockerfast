@@ -1,0 +1,17 @@
+micronaut:
+  security:
+    enabled: true
+
+akhq:
+  connections:
+    my-cluster:
+      properties:
+        bootstrap.servers: "kafka:9092"
+  security:
+    default-group: no-roles
+    basic-auth:
+      - username: admin
+        password: "${ADMIN_PASSWORD_SHA256}"
+        passwordHash: SHA256
+        groups:
+          - admin
