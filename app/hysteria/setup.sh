@@ -24,9 +24,9 @@ export CONTAINERS_APP_DIR=${CONTAINERS_APP_DIR}
 export NODE_IP=${NODE_IP}
 
 # 根据模板生成配置文件
-envsubst < temp.yaml > ${CONTAINERS_APP_DIR}/config.yaml
+envsubst < config_temp.yaml > ${CONTAINERS_APP_DIR}/config.yaml
 
 cat ./server.crt > ${CONTAINERS_APP_DIR}/server.crt
 cat ./server.key > ${CONTAINERS_APP_DIR}/server.key
 
-docker-compose up -d
+docker compose up -d
