@@ -1,0 +1,22 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  pgsql:
+    image: postgres:16
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:5432"
+    networks:
+      - local_network
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - TZ=Asia/Shanghai
+      - PGTZ=Asia/Shanghai
+    volumes:
+      - ${CONTAINERS_APP_DIR}/data:/var/lib/postgresql/data
+      - ${CONTAINERS_APP_DIR}/postgresql.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
