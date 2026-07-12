@@ -1,0 +1,60 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  base: &base
+    image: chatwoot/chatwoot:latest
+    env_file: ${CONTAINERS_APP_DIR}/.env ## Change this file for customized env variables
+    volumes:
+      - ${CONTAINERS_APP_DIR}/storage_data:/app/storage
+    networks:
+      - local_network
+    depends_on:
+      - postgres
+      - redis
+
+  rails:
+    <<: *base
+    ports:
+      - '${APP_PORT}:3000'
+    environment:
+      - NODE_ENV=production
+      - RAILS_ENV=production
+      - INSTALLATION_ENV=docker
+    entrypoint: docker/entrypoints/rails.sh
+    command: ['bundle', 'exec', 'rails', 's', '-p', '3000', '-b', '0.0.0.0']
+    restart: always
+
+  sidekiq:
+    <<: *base
+    environment:
+      - NODE_ENV=production
+      - RAILS_ENV=production
+      - INSTALLATION_ENV=docker
+    command: ['bundle', 'exec', 'sidekiq', '-C', 'config/sidekiq.yml']
+    restart: always
+  
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: always
+    networks:
+      - local_network
+    volumes:
+      - ${CONTAINERS_APP_DIR}/postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      # Please provide your own password.
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  redis:
+    image: redis:alpine
+    restart: always
+    networks:
+      - local_network
+    command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
+    env_file: .env
+    volumes:
+      - ${CONTAINERS_APP_DIR}/redis_data:/data
