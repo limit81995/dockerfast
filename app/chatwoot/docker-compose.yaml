@@ -9,8 +9,6 @@ services:
     env_file: ${CONTAINERS_APP_DIR}/.env ## Change this file for customized env variables
     volumes:
       - ${CONTAINERS_APP_DIR}/storage_data:/app/storage
-    networks:
-      - local_network
     depends_on:
       - postgres
       - redis
