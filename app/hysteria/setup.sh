@@ -29,4 +29,4 @@ envsubst < config_temp.yaml > ${CONTAINERS_APP_DIR}/config.yaml
 cat ./server.crt > ${CONTAINERS_APP_DIR}/server.crt
 cat ./server.key > ${CONTAINERS_APP_DIR}/server.key
 
-docker compose up -d
+docker compose down && docker compose up -d
