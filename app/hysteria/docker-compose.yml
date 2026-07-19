@@ -1,6 +1,7 @@
 services:
   hysteria:
     image: tobyxdd/hysteria:latest
+    restart: always
     container_name: ${APP_NAME}
     cap_add:
       - NET_ADMIN
