@@ -1,0 +1,19 @@
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ${APP_NAME}
+    ports:
+      - "${APP_PORT}:8080"
+    networks:
+      - local_network
+    environment:
+      WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY}
+      TZ: Asia/Shanghai
+    volumes:
+      - ${CONTAINERS_APP_DIR}/data:/app/backend/data
+    restart: unless-stopped
