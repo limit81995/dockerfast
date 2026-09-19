@@ -1,0 +1,38 @@
+# 基于 Immich v3.2.2 官方 Compose，使用已有 PostgreSQL 和 Redis。
+# https://docs.immich.app/install/docker-compose/
+networks:
+  local_network:
+    driver: bridge
+    external: true
+
+services:
+  immich-server:
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-v3.2.2}
+    container_name: ${APP_NAME}
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT:-2283}:2283"
+    networks:
+      - local_network
+    volumes:
+      - ${CONTAINERS_APP_DIR}/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - immich-machine-learning
+    restart: unless-stopped
+    healthcheck:
+      disable: false
+
+  immich-machine-learning:
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-v3.2.2}
+    container_name: ${APP_NAME}-machine-learning
+    env_file:
+      - .env
+    networks:
+      - local_network
+    volumes:
+      - ${CONTAINERS_APP_DIR}/model-cache:/cache
+    restart: unless-stopped
+    healthcheck:
+      disable: false
