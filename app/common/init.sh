@@ -24,7 +24,7 @@ app_init() {
   mkdir -p "${CONTAINERS_APP_DIR}"
 
 if [[ ! -f "${SETUP_CURRENT_DIR}/.env" ]]; then
-  echo "缺少 app/open-webui/.env，请先复制 .env.example 并修改配置。" >&2
+  echo "缺少 app/${APP_NAME}/.env，请先复制 .env.example 并修改配置。" >&2
   exit 1
 fi
 }

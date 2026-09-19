@@ -1,28 +1,19 @@
-# 当前脚本路径
-SETUP_CURRENT_DIR=$(cd $(dirname $0);pwd)
-#APP 名称
-APP_NAME=${SETUP_CURRENT_DIR##*/};
-# APP通用安装目录地址
-CONTAINERS_APP_DIR=${SETUP_CURRENT_DIR}/../../containers/${APP_NAME}
+#!/usr/bin/env bash
+set -e
 
-# 检查容器目录是否存在 不存在则创建
-if [ ! -d ${SETUP_CURRENT_DIR}/../../containers ]; then
-  mkdir ${SETUP_CURRENT_DIR}/../../containers
+# 引用公共初始化函数，并将当前 setup.sh 的位置传给它。
+source "$(dirname "${BASH_SOURCE[0]}")/../common/init.sh"
+app_init "${BASH_SOURCE[0]}"
+#-------------------------------------------
+
+if ! command -v envsubst >/dev/null 2>&1; then
+  echo "缺少 envsubst，请先安装 gettext 或 gettext-base。" >&2
+  exit 1
 fi
 
-if [ ! -d ${CONTAINERS_APP_DIR} ]; then
-  mkdir ${CONTAINERS_APP_DIR}
-fi
+# 每次启动前根据 .env 替换模板中的环境变量，生成配置。
+mkdir -p "${CONTAINERS_APP_DIR}/conf"
+envsubst < "${SETUP_CURRENT_DIR}/redis.conf" > "${CONTAINERS_APP_DIR}/conf/redis.conf"
 
-if [ ! -d ${CONTAINERS_APP_DIR}/conf ]; then
-  mkdir ${CONTAINERS_APP_DIR}/conf
-  cat ./redis.conf > ${CONTAINERS_APP_DIR}/conf/redis.conf
-fi
-
-#暴露的环境变量
-export APP_NAME=${APP_NAME}
-export CONTAINERS_APP_DIR=${CONTAINERS_APP_DIR}
-
-# 创建共用网络
-docker network create --driver bridge local_network || true
-docker-compose up -d
+DOCKER_COMPOSE_FILE=${SETUP_CURRENT_DIR}/docker-compose.yml
+docker compose -f "${DOCKER_COMPOSE_FILE}" down && docker compose -f "${DOCKER_COMPOSE_FILE}" up -d
