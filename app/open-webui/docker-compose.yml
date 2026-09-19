@@ -13,6 +13,7 @@ services:
       - local_network
     environment:
       WEBUI_SECRET_KEY: ${WEBUI_SECRET_KEY}
+      WEBUI_NAME: ${WEBUI_NAME}
       TZ: Asia/Shanghai
     volumes:
       - ${CONTAINERS_APP_DIR}/data:/app/backend/data
