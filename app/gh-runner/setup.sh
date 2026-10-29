@@ -24,7 +24,7 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
 
   docker run -d --restart always --name "${CONTAINER_NAME}" \
     -e RUNNER_NAME="${CONTAINER_NAME}" \
-    -e ACCESS_TOKEN="${ACCESS_TOKEN}" \
+    -e RUNNER_TOKEN="${RUNNER_TOKEN}" \
     -e RUNNER_WORKDIR="/data/runner/${CONTAINER_NAME}" \
     -e RUNNER_GROUP=${RUNNER_GROUP} \
     -e RUNNER_SCOPE=${RUNNER_SCOPE} \
