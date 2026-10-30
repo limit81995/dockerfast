@@ -1,0 +1,4 @@
+# 全局 core.autocrlf=true 会把脚本检出成 CRLF，导致 `set -e\r` 直接报错
+*.sh text eol=lf
+*.env text eol=lf
+*.env.example text eol=lf

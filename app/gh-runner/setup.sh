@@ -31,6 +31,7 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
     -e DISABLE_AUTO_UPDATE="true" \
     -e ORG_NAME="${ORG_NAME}" \
     -e LABELS="${LABELS}" \
+     ${DOCKER_SOCK:+-v "$DOCKER_SOCK:/var/run/docker.sock"} \
     -v "${CONTAINERS_APP_DIR}/${CONTAINER_NAME}:/data/runner/${CONTAINER_NAME}" \
     "${RUNNER_IMAGE}"
 
