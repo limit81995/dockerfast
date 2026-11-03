@@ -25,6 +25,9 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
   CONTAINER_NAME="${RUNNER_NAME_PREFIX}-$(rand_hash)"
 
   docker run -d --restart always --name "${CONTAINER_NAME}" \
+    ${RUNNER_PRIVILEGED:+--privileged} \
+    ${START_DOCKER_SERVICE:+-e START_DOCKER_SERVICE} \
+    ${RUNNER_TOKEN:+-e RUNNER_TOKEN} \
     -e RUNNER_NAME="${CONTAINER_NAME}" \
     ${RUNNER_TOKEN:+-e RUNNER_TOKEN} \
     ${ACCESS_TOKEN:+-e ACCESS_TOKEN} \
@@ -34,7 +37,6 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
     -e DISABLE_AUTO_UPDATE="true" \
     -e ORG_NAME="${ORG_NAME}" \
     -e LABELS="${LABELS}" \
-     ${DOCKER_SOCK:+-v "$DOCKER_SOCK:/var/run/docker.sock"} \
     -v "${CONTAINERS_APP_DIR}/${CONTAINER_NAME}:/data/runner/${CONTAINER_NAME}" \
     "${RUNNER_IMAGE}"
 
