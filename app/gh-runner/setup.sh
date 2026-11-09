@@ -32,10 +32,10 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
     ${RUNNER_TOKEN:+-e RUNNER_TOKEN} \
     ${ACCESS_TOKEN:+-e ACCESS_TOKEN} \
     -e RUNNER_WORKDIR="/data/runner/${CONTAINER_NAME}" \
-    -e RUNNER_GROUP=${RUNNER_GROUP} \
-    -e RUNNER_SCOPE=${RUNNER_SCOPE} \
+    ${RUNNER_GROUP:+-e RUNNER_GROUP} \
+    ${RUNNER_SCOPE:+-e RUNNER_SCOPE} \
+    ${ORG_NAME:+-e ORG_NAME} \
     -e DISABLE_AUTO_UPDATE="true" \
-    -e ORG_NAME="${ORG_NAME}" \
     -e LABELS="${LABELS}" \
     -v "${CONTAINERS_APP_DIR}/${CONTAINER_NAME}:/data/runner/${CONTAINER_NAME}" \
     "${RUNNER_IMAGE}"
