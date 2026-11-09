@@ -34,6 +34,7 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
     ${RUNNER_GROUP:+-e RUNNER_GROUP} \
     ${RUNNER_SCOPE:+-e RUNNER_SCOPE} \
     ${ORG_NAME:+-e ORG_NAME} \
+    ${REPO_URL:+-e REPO_URL} \
     -e DISABLE_AUTO_UPDATE="true" \
     -e LABELS="${LABELS}" \
     -v "${CONTAINERS_APP_DIR}/${CONTAINER_NAME}:/data/runner/${CONTAINER_NAME}" \
