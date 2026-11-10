@@ -25,6 +25,7 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
   CONTAINER_NAME="${RUNNER_NAME_PREFIX}-$(rand_hash)"
 
   docker run -d --restart always --name "${CONTAINER_NAME}" \
+    --tmpfs /run:mode=755 \
     ${RUNNER_PRIVILEGED:+--privileged} \
     ${START_DOCKER_SERVICE:+-e START_DOCKER_SERVICE} \
     ${RUNNER_TOKEN:+-e RUNNER_TOKEN} \
