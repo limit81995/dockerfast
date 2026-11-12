@@ -1,6 +1,6 @@
 # gh-runner
 
-批量创建 GitHub Actions Runner；清理时先注销，再删除容器。
+批量创建使用 Sysbox runtime 的 GitHub Actions Runner；清理时先注销，再删除容器。
 
 ## 用法
 
@@ -22,17 +22,27 @@ ORG_NAME=bwq-tech
 RUNNER_SCOPE=org
 RUNNER_GROUP=default
 LABELS=self-hosted,linux,bwq-tech
-DOCKER_SOCK=/var/run/docker.sock
+START_DOCKER_SERVICE=false
 RUNNER_IMAGE=myoung34/github-runner:latest
 ```
 
-`setup.sh` 按变量是否有值决定是否传入 `RUNNER_TOKEN`、`ACCESS_TOKEN` 和 Docker socket：
+`setup.sh` 按变量是否有值决定是否传入 `RUNNER_TOKEN`、`ACCESS_TOKEN`：
 
 - `RUNNER_TOKEN`：从 GitHub 的 New runner 页面获取，有效期约 1 小时。它过期不会中断正在运行的 runner，但当前镜像配置在容器重启时会重新注册，需要有效令牌。
 - `ACCESS_TOKEN`：使用 Fine-grained PAT，Resource owner 选择目标组织，Organization permissions 授予 **Self-hosted runners → Read and write**。镜像用它获取短期注册令牌；设置有效期，到期前更换，组织要求审批时需先获批。
 - 创建 runner 时两种令牌任选其一；同时填写时，镜像优先使用 `ACCESS_TOKEN`。`clear.sh` 必须使用有效的 `ACCESS_TOKEN`，也能清理之前用 `RUNNER_TOKEN` 创建的容器。
 
-令牌仅填写在本地 `.env`，不要提交到 Git。修改 `.env` 不会改变已有容器的环境，创建时的凭据要通过重建容器更新；`clear.sh` 使用当前 `.env` 中的凭据。
+令牌仅填写在本地 `.env`，不要提交到 Git。修改 `.env` 仅影响后续新建的容器，不会改变已有容器的环境或 runtime；已有实例需要重建才能应用新配置。再次执行 `setup.sh` 会新增 runner，不会替换旧实例。`clear.sh` 使用当前 `.env` 中的凭据。
+
+## Sysbox 与 Docker
+
+请先按[官方安装说明](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md)在宿主机手动安装 Sysbox。`setup.sh` 仅检查 Docker 是否已注册 `sysbox-runc` runtime；未检测到时提示安装并退出，不自动安装或修改 Docker 配置。
+
+所有新建 runner 都使用 `--runtime=sysbox-runc`，不启用 Docker 特权模式，也不挂载宿主 Docker socket。`START_DOCKER_SERVICE=false` 表示不启动容器内 Docker；需要 Docker 构建的 CI 或部署任务改为 `true`，由镜像启动容器内 Docker daemon（DinD）。
+
+`--tmpfs /run:mode=755` 保留 `/run` 的临时文件系统行为：容器停止后清除 PID、socket 等运行状态，减少 DinD 重启时的残留；它不是 Sysbox 的必要条件。
+
+当前仍是长期运行的 runner，使用自动重启和持久工作目录，不会在每个任务后销毁。Sysbox 不负责清除前一个任务的修改；CI 和持有部署凭据的 CD 应使用独立 runner 与工作目录。
 
 ## 清理流程
 
