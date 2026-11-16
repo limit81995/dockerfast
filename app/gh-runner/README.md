@@ -1,6 +1,6 @@
 # gh-runner
 
-批量创建使用 Sysbox runtime 的 GitHub Actions Runner；清理时先注销，再删除容器。
+批量创建 GitHub Actions Runner，按需使用 Sysbox runtime；清理时先注销，再删除容器。
 
 ## 用法
 
@@ -36,9 +36,9 @@ RUNNER_IMAGE=myoung34/github-runner:latest
 
 ## Sysbox 与 Docker
 
-请先按[官方安装说明](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md)在宿主机手动安装 Sysbox。`setup.sh` 仅检查 Docker 是否已注册 `sysbox-runc` runtime；未检测到时提示安装并退出，不自动安装或修改 Docker 配置。
+仅当 `START_DOCKER_SERVICE` 严格等于小写 `true` 时，`setup.sh` 才检查并使用 `sysbox-runc` runtime。此时请先按[官方安装说明](https://github.com/nestybox/sysbox/blob/master/docs/user-guide/install-package.md)在宿主机手动安装 Sysbox；未检测到时提示安装并退出，不自动安装或修改 Docker 配置。值为 `false`、其他值、空值或未设置时，均跳过 Sysbox 检测并使用 Docker 默认 runtime。
 
-所有新建 runner 都使用 `--runtime=sysbox-runc`，不启用 Docker 特权模式，也不挂载宿主 Docker socket。`START_DOCKER_SERVICE=false` 表示不启动容器内 Docker；需要 Docker 构建的 CI 或部署任务改为 `true`，由镜像启动容器内 Docker daemon（DinD）。
+新建 runner 不启用 Docker 特权模式，也不挂载宿主 Docker socket。`START_DOCKER_SERVICE=false` 表示不启动容器内 Docker；需要 Docker 构建的 CI 或部署任务改为 `true`，使用 `--runtime=sysbox-runc`，由镜像启动容器内 Docker daemon（DinD）。
 
 `--tmpfs /run:mode=755` 保留 `/run` 的临时文件系统行为：容器停止后清除 PID、socket 等运行状态，减少 DinD 重启时的残留；它不是 Sysbox 的必要条件。
 

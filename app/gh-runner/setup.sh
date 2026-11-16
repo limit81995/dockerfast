@@ -12,9 +12,13 @@ app_init "${BASH_SOURCE[0]}"
 #----------------------------------------------
 [ -n "${RUNNER_TOKEN:-}${ACCESS_TOKEN:-}" ] || { echo "请在 .env 中配置 RUNNER_TOKEN 或 ACCESS_TOKEN" >&2; exit 1; }
 
-# 检查 Docker 是否已注册 Sysbox runtime。
-runtimes=$(docker info --format '{{json .Runtimes}}')
-[[ "$runtimes" == *'"sysbox-runc":'* ]] || { echo "未检测到 Sysbox，请先在 Docker 宿主机安装并注册 sysbox-runc。" >&2; exit 1; }
+# 仅启动容器内 Docker 时检查并使用 Sysbox runtime。
+runtime_args=()
+if [[ "${START_DOCKER_SERVICE:-}" == "true" ]]; then
+  runtimes=$(docker info --format '{{json .Runtimes}}')
+  [[ "$runtimes" == *'"sysbox-runc":'* ]] || { echo "未检测到 Sysbox，请先在 Docker 宿主机安装并注册 sysbox-runc。" >&2; exit 1; }
+  runtime_args=(--runtime=sysbox-runc)
+fi
 
 # 4 位随机后缀，避免重名。
 rand_hash() {
@@ -28,7 +32,7 @@ while [ "${i}" -lt "${RUNNER_COUNT}" ]; do
   CONTAINER_NAME="${RUNNER_NAME_PREFIX}-$(rand_hash)"
 
   docker run -d --restart always --name "${CONTAINER_NAME}" \
-    --runtime=sysbox-runc \
+    "${runtime_args[@]}" \
     --tmpfs /run:mode=755 \
     ${START_DOCKER_SERVICE:+-e START_DOCKER_SERVICE} \
     ${RUNNER_TOKEN:+-e RUNNER_TOKEN} \
