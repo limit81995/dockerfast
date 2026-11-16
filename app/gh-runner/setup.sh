@@ -7,7 +7,7 @@ if [ -z "${BASH_VERSION}" ]; then
 fi
 
 source "$(dirname "${BASH_SOURCE[0]}")/../common/init.sh"
-app_init "${BASH_SOURCE[0]}" --allow-missing-env
+app_init "${BASH_SOURCE[0]}"
 
 #----------------------------------------------
 # .env 仅提供本次交互的默认值，不自动保存输入。

@@ -6,7 +6,7 @@
 
 ```bash
 cd app/gh-runner
-cp .env.example .env      # 可选：填写配置，作为 setup.sh 的交互默认值
+cp .env.example .env      # 必须先创建 .env，其中的配置作为交互默认值
 sh setup.sh              # 初始化后逐项输入配置，再按 RUNNER_COUNT 创建
 sh clear.sh              # 需要 .env，注销并删除本应用的 runner 容器
 ```
@@ -15,14 +15,14 @@ sh clear.sh              # 需要 .env，注销并删除本应用的 runner 容�
 
 每次运行 `setup.sh`，初始化后都会依次提示输入 `RUNNER_COUNT`、`RUNNER_NAME_PREFIX`、`RUNNER_TOKEN`、`ACCESS_TOKEN`、`RUNNER_SCOPE`、`ORG_NAME`、`REPO_URL`、`RUNNER_GROUP`、`LABELS`、`START_DOCKER_SERVICE` 和 `RUNNER_IMAGE`。
 
-- 存在 `.env` 时，使用其中的配置作为默认值，直接回车采用默认值。
-- 不存在 `.env` 时也能运行，各项没有默认值，按提示填写；下方示例不会自动成为默认值。
+- 必须先创建 `.env`；缺少文件时初始化会提示并退出，不进入交互。
+- 使用 `.env` 中的配置作为默认值，直接回车采用默认值；未配置的项没有默认值。
 - 输入 `-` 清空该项；必填项清空或留空时会重新提示，可选项可以为空。
 - 令牌输入隐藏，也不会显示已有令牌的内容。两种令牌至少填写一种。
 - 输入结束（EOF，例如空输入行按 Ctrl+D）时取消本次创建。
-- 本次输入仅用于当前运行，不写回或创建 `.env`。
+- 本次输入仅用于当前运行，不写回 `.env`。
 
-需要保存默认配置时，可手动复制并修改 `.env.example`，例如：
+首次运行前，复制 `.env.example` 为 `.env` 并修改默认配置，例如：
 
 ```dotenv
 RUNNER_COUNT=2
@@ -44,7 +44,7 @@ RUNNER_IMAGE=myoung34/github-runner:latest
 - `ACCESS_TOKEN`：使用 Fine-grained PAT，Resource owner 选择目标组织，Organization permissions 授予 **Self-hosted runners → Read and write**。镜像用它获取短期注册令牌；设置有效期，到期前更换，组织要求审批时需先获批。
 - 创建 runner 时两种令牌任选其一；同时填写时，镜像优先使用 `ACCESS_TOKEN`。`clear.sh` 必须使用有效的 `ACCESS_TOKEN`，也能清理之前用 `RUNNER_TOKEN` 创建的容器。
 
-令牌可在提示时输入，或保存在本地 `.env`，不要提交到 Git。交互输入及 `.env` 修改仅影响本次或后续新建的容器，不会改变已有容器的环境或 runtime；已有实例需要重建才能应用新配置。再次执行 `setup.sh` 会新增 runner，不会替换旧实例。`clear.sh` 不使用 setup 的临时输入，仍要求存在 `.env`，并使用其中的凭据和配置；若 setup 时未保存 `.env`，清理前需补充与目标 runner 对应的配置。
+令牌可在提示时输入，或保存在本地 `.env`，不要提交到 Git。交互输入及 `.env` 修改仅影响本次或后续新建的容器，不会改变已有容器的环境或 runtime；已有实例需要重建才能应用新配置。再次执行 `setup.sh` 会新增 runner，不会替换旧实例。`clear.sh` 不使用 setup 的临时输入，仍要求存在 `.env`，并使用其中的凭据和配置；若 setup 时临时修改了配置，清理前需确保 `.env` 中的配置与目标 runner 对应。
 
 ## Sysbox 与 Docker
 
