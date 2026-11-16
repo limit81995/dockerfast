@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # 初始化应用通用变量和目录。
-# 参数必须是调用方 setup.sh 的路径，例如：app_init "${BASH_SOURCE[0]}"
+# 参数必须是调用方 setup.sh 的路径；第二参数 --allow-missing-env 允许交互脚本不使用 .env。
 app_init() {
   echo "初始化脚本.."
   local setup_file=${1:?app_init 需要传入 setup.sh 的路径}
@@ -23,10 +23,10 @@ app_init() {
 
   mkdir -p "${CONTAINERS_APP_DIR}"
 
-if [[ ! -f "${SETUP_CURRENT_DIR}/.env" ]]; then
-  echo "缺少 app/${APP_NAME}/.env，请先复制 .env.example 并修改配置。" >&2
-  exit 1
-fi
+  if [[ ! -f "${SETUP_CURRENT_DIR}/.env" && "${2:-}" != --allow-missing-env ]]; then
+    echo "缺少 app/${APP_NAME}/.env，请先复制 .env.example 并修改配置。" >&2
+    exit 1
+  fi
 }
 
 # 创建本地共用网络
